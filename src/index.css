@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* Dark mode is driven by a `.dark` class on <html> (toggle in the navbar). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   Apex Motors — Design Tokens (theme-aware)
+   The Tailwind color tokens below keep their original names
+   (ink, coal, champagne, …) but resolve to per-theme values via
+   the --c-* variables defined in :root (light) and .dark (dark).
+   So `bg-champagne text-ink` stays correct in BOTH themes:
+     light → navy button + ivory text
+     dark  → gold button + near-black text
+   ============================================================ */
+@theme {
+  --color-ink: var(--c-bg);          /* page background           */
+  --color-coal: var(--c-surface);    /* raised surface            */
+  --color-charcoal: var(--c-card);   /* card surface              */
+  --color-graphite: var(--c-hover);  /* hover surface / chips     */
+  --color-line: var(--c-line);       /* hairline border           */
+
+  --color-bone: var(--c-text);       /* primary text              */
+  --color-silver: var(--c-text-2);   /* secondary text            */
+  --color-ash: var(--c-text-3);      /* muted text                */
+
+  --color-champagne: var(--c-accent);          /* accent / CTA     */
+  --color-champagne-soft: var(--c-accent-soft); /* accent hover    */
+  --color-champagne-deep: var(--c-accent-deep); /* accent deep      */
+
+  --color-success: var(--c-success);
+  --color-danger: var(--c-danger);
+
+  --font-display: "Bodoni Moda", ui-serif, Georgia, serif;
+  --font-body: "Jost", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-lux: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- Light theme (default) — warm luxury, midnight-navy accent.
+       Toned down from bright ivory to a softer, muted sand so the
+       page reads warm and refined rather than glary. ---- */
+:root {
+  --c-bg: #dac8a4;        /* warm golden wheat (warmer still)  */
+  --c-surface: #e2d2b2;   /* raised surface                   */
+  --c-card: #e8dcc0;      /* card surface (lighter than bg)   */
+  --c-hover: #ccba92;     /* chips / hover                    */
+  --c-line: #c0ad85;      /* hairline border                  */
+
+  --c-text: #251f12;      /* warm near-black (brown-black)    */
+  --c-text-2: #574d37;    /* warm secondary                   */
+  --c-text-3: #6e6342;    /* warm muted                       */
+
+  --c-accent: #1e2a4a;        /* midnight navy                */
+  --c-accent-soft: #2c3d68;   /* lighter navy (hover)         */
+  --c-accent-deep: #141d36;   /* deep navy                    */
+
+  --c-success: #2e9e63;
+  --c-danger: #c0392b;
+
+  color-scheme: light;
+}
+
+/* ---- Dark theme — original cinematic, champagne-gold accent ---- */
+.dark {
+  --c-bg: #0a0a0b;
+  --c-surface: #111113;
+  --c-card: #18181b;
+  --c-hover: #232327;
+  --c-line: #2a2a2e;
+
+  --c-text: #f5f2ec;
+  --c-text-2: #b6b1a8;
+  --c-text-3: #6f6b63;
+
+  --c-accent: #c9a24b;
+  --c-accent-soft: #e4c97e;
+  --c-accent-deep: #9c7a2e;
+
+  --c-success: #5bbf86;
+  --c-danger: #d4544a;
+
+  color-scheme: dark;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-body);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  /* Smooth the flip between themes */
+  transition: background-color 0.4s var(--ease-lux), color 0.4s var(--ease-lux);
+}
+
+/* Headings default to the display serif */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: var(--color-champagne);
+  color: var(--color-coal);
+}
+
+/* Refined scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-graphite);
+  border-radius: 999px;
+  border: 2px solid var(--color-ink);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-champagne-deep);
+}
+
+/* ---- Shared utility helpers ---- */
+.eyebrow {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-champagne);
+}
+
+/* Accent gradient for display text (navy in light, gold in dark) */
+.text-gradient-gold {
+  background: linear-gradient(
+    100deg,
+    var(--color-champagne-soft),
+    var(--color-champagne) 45%,
+    var(--color-champagne-deep)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass {
+  background: color-mix(in srgb, var(--color-coal) 72%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* Tone the grain down on light surfaces so it doesn't read as dirt */
+:root .grain::before {
+  opacity: 0.02;
+}
+
+/* Focus ring — accessible, on-brand */
+:where(a, button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-champagne);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
